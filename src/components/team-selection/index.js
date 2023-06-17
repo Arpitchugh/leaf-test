@@ -14,11 +14,30 @@ export default function TeamSelection() {
 	const [noWK, setNoWK] = React.useState(0);
 
 	const addPlayer = index => {
+		console.log(selectedPlayers);
 		if (selectedPlayers.length >= 11) {
 			return; // Limit reached, prevent further selections
 		}
 
 		const player = players[index];
+
+		if (
+			(player.type === 'Batsman' &&
+				selectedPlayers.filter(predicate => predicate.type === 'Batsman')
+					.length >= 5) ||
+			(player.type === 'Bowler' &&
+				selectedPlayers.filter(predicate => predicate.type === 'Bowler')
+					.length >= 5) ||
+			(player.type === 'AllRounder' &&
+				selectedPlayers.filter(predicate => predicate.type === 'AllRounder')
+					.length >= 1) ||
+			(player.type === 'WicketKeeper' &&
+				selectedPlayers.filter(predicate => predicate.type === 'WicketKeeper')
+					.length >= 1)
+		) {
+			return; // Limit reached for the specific player type, prevent further selection
+		}
+
 		const updatedPlayers = [...players];
 		updatedPlayers[index] = { ...player, selected: true };
 
